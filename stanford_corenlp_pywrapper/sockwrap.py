@@ -165,7 +165,11 @@ class SockWrap:
         # java "long" is 8 bytes, which python struct calls "long long".
         # java default byte ordering is big-endian.
         size_info = struct.unpack('>Q', size_info_str)[0]
-        data = sock.recv(size_info)
+
+        data = ""
+        while size_info - len(data) > 0:
+            data += sock.recv(size_info)
+
         return data
 
 
